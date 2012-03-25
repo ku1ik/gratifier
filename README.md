@@ -42,3 +42,12 @@ notification:
 
 In this scenario you need to edit `~/.gratifier/nicknames/joe` file (that is
 initially empty) and enter email address you know for this nickname.
+
+## Bugs
+
+Report bugs and request new features at <https://github.com/sickill/gratifier/issues>.
+
+## Authors
+
+<https://github.com/sickill/gratifier/contributors>
+

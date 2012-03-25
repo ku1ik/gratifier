@@ -10,6 +10,12 @@ to display notifications with avatar image as notification icon.
 Avatar images are fetched from [gravatar.com](http://www.gravatar.com/) and
 cached in `~/.gratifier/avatars` directory.
 
+It supports following notification utilities:
+
+* `notify-send` on Linux with _libnotify_ (Ubuntu, other Gnome based desktop)
+* `kdialog` on Linux with KDE
+* `growlnotify` on OSX
+
 ## Installation
 
     $ curl -skL https://github.com/sickill/gratifier/raw/master/bin/gratifier >~/bin/gratifier

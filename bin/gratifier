@@ -1,0 +1,14 @@
+#!/bin/bash
+
+mkdir -p $HOME/.gratifier/avatars
+
+size=32
+email_hash=$(echo -n $GRAVATAR_EMAIL | md5sum | cut -f1 -d' ')
+avatar_path="$HOME/.gratifier/avatars/$email_hash"
+
+if [[ ! -f $avatar_path ]]; then
+  echo "no avatar for $EMAIL, downloading..."
+  curl -v "http://www.gravatar.com/avatar/$email_hash?s=$size&d=/default" -o $avatar_path
+fi
+
+notify-send -i $avatar_path "$1" "$2"

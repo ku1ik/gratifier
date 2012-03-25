@@ -8,7 +8,7 @@
 to display notifications with avatar image as notification icon.
 
 Avatar images are fetched from [gravatar.com](http://www.gravatar.com/) and
-cached in `~/.gratifier/avatars` directory.
+cached in `~/.gratifier/gravatars` directory.
 
 It supports following notification utilities:
 
@@ -40,8 +40,8 @@ notification:
 
     $ NICKNAME=joe gratifier "Notification title" "Notification body"
 
-In this scenario you need to edit `~/.gratifier/nicknames/joe` file (that is
-initially empty) and enter email address you know for this nickname.
+In this scenario you need to edit `~/.gratifier/nicknames/joe` file and specify
+either email address you know for this nickname or path to avatar image.
 
 ## Bugs
 

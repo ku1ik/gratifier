@@ -2,8 +2,8 @@
 
 size=32
 
-mkdir -p $HOME/.gratifier/avatars/$size
-mkdir -p $HOME/.gratifier/nicknames
+mkdir -p $HOME/.gratifier/gravatars/$size
+mkdir -p $HOME/.gratifier/nicknames/avatars
 
 function notify {
   if [ $(which notify-send 2>/dev/null) ]; then
@@ -30,28 +30,39 @@ function calc_md5_sum {
 if [[ -n "$GRAVATAR_EMAIL" ]]; then
   email=$GRAVATAR_EMAIL
 elif [[ -n "$NICKNAME" ]]; then
-  nickname_path="$HOME/.gratifier/nicknames/$NICKNAME"
+  nickname_config_path="$HOME/.gratifier/nicknames/$NICKNAME"
 
-  if [[ -f "$nickname_path" ]]; then
-    email=$(cat "$nickname_path" 2>/dev/null)
+  if [[ -f "$nickname_config_path" ]]; then
+    EMAIL=""
+    IMAGE=""
+
+    source "$nickname_config_path"
+
+    email=$EMAIL
+    avatar_path=$IMAGE
   else
-    touch "$nickname_path"
+    cat <<EOF > "$nickname_config_path"
+# Uncomment and edit ONE of the following lines
+
+# EMAIL="email@example.org"
+# IMAGE="~/.gratifier/nicknames/avatars/$NICKNAME.jpg"
+EOF
   fi
 fi
 
-if [[ -n "$email" ]]; then
-  email_hash=$(calc_md5_sum $email)
-  avatar_path="$HOME/.gratifier/avatars/$size/$email_hash"
-
-  if [[ ! -f $avatar_path ]]; then
-    curl -s "http://www.gravatar.com/avatar/$email_hash?s=$size&d=/default" -o $avatar_path
+if [[ -z "$avatar_path" ]]; then
+  if [[ -n "$email" ]]; then
+    email_hash=$(calc_md5_sum $email)
+    avatar_path="$HOME/.gratifier/gravatars/$size/$email_hash"
 
     if [[ ! -f $avatar_path ]]; then
-      avatar_path="/some/default/icon.png"
+      curl -s "http://www.gravatar.com/avatar/$email_hash?s=$size&d=/default" -o $avatar_path
+
+      if [[ ! -f $avatar_path ]]; then
+        avatar_path="/some/default/icon.png"
+      fi
     fi
   fi
-
-  notify "$1" "$2" $avatar_path
-else
-  notify "$1" "$2"
 fi
+
+notify "$1" "$2" "$avatar_path"

@@ -1,9 +1,20 @@
 #!/bin/bash
 
-mkdir -p $HOME/.gratifier/avatars
+size=32
+
+mkdir -p $HOME/.gratifier/avatars/$size
 mkdir -p $HOME/.gratifier/nicknames
 
-size=32
+function notify {
+  if [ $(which notify-send 2>/dev/null) ]; then
+    notify-send -i "$3" "$1" "$2"
+  elif [ $(which growlnotify 2>/dev/null) ]; then
+    app_name=$(basename $0)
+    growlnotify -n "$app_name" --image "$3" -m "$2" "$1"
+  elif [ $(which kdialog 2>/dev/null) ]; then
+    kdialog --icon $3 --title "$1" --passivepopup "$2"
+  fi
+}
 
 if [[ -n "$GRAVATAR_EMAIL" ]]; then
   email=$GRAVATAR_EMAIL
@@ -19,18 +30,17 @@ fi
 
 if [[ -n "$email" ]]; then
   email_hash=$(echo -n $email | md5sum | cut -f1 -d' ')
-  avatar_path="$HOME/.gratifier/avatars/$email_hash"
+  avatar_path="$HOME/.gratifier/avatars/$size/$email_hash"
 
   if [[ ! -f $avatar_path ]]; then
-    echo "no avatar for $EMAIL, downloading..."
-    curl -v "http://www.gravatar.com/avatar/$email_hash?s=$size&d=/default" -o $avatar_path
+    curl -s "http://www.gravatar.com/avatar/$email_hash?s=$size&d=/default" -o $avatar_path
 
     if [[ ! -f $avatar_path ]]; then
       avatar_path="/some/default/icon.png"
     fi
   fi
 
-  notify-send -i $avatar_path "$1" "$2"
+  notify "$1" "$2" $avatar_path
 else
-  notify-send "$1" "$2"
+  notify "$1" "$2"
 fi

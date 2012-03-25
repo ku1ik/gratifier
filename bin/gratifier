@@ -19,6 +19,14 @@ function notify {
   fi
 }
 
+function calc_md5_sum {
+  if [ $(which md5sum 2>/dev/null) ]; then
+    echo -n "$1" | md5sum | cut -f1 -d' '
+  elif [ $(which md5 2>/dev/null) ]; then
+    echo -n "$1" | md5
+  fi
+}
+
 if [[ -n "$GRAVATAR_EMAIL" ]]; then
   email=$GRAVATAR_EMAIL
 elif [[ -n "$NICKNAME" ]]; then
@@ -32,7 +40,7 @@ elif [[ -n "$NICKNAME" ]]; then
 fi
 
 if [[ -n "$email" ]]; then
-  email_hash=$(echo -n $email | md5sum | cut -f1 -d' ')
+  email_hash=$(calc_md5_sum $email)
   avatar_path="$HOME/.gratifier/avatars/$size/$email_hash"
 
   if [[ ! -f $avatar_path ]]; then

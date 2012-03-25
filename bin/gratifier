@@ -13,6 +13,9 @@ function notify {
     growlnotify -n "$app_name" --image "$3" -m "$2" "$1"
   elif [ $(which kdialog 2>/dev/null) ]; then
     kdialog --icon $3 --title "$1" --passivepopup "$2"
+  else
+    echo "No notification utility found. Please install libnotify-bin, kdialog or growlnotify."
+    exit 1
   fi
 }
 

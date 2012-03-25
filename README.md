@@ -1,10 +1,14 @@
 # gratifier
 
-Command line desktop notifications with Gravatars!
+**gra**vatar no**tifier**.
 
 ## About
 
-TODO
+**gratifier** is a wrapper for desktop notification utilities that allows you
+to display notifications with avatar image as notification icon.
+
+Avatar images are fetched from [gravatar.com](http://www.gravatar.com/) and
+cached in `~/.gratifier/avatars` directory.
 
 ## Installation
 
@@ -18,13 +22,15 @@ on your `$PATH`.
 
 ### Option 1: specifying email address
 
-If your app knows email address of user that triggered notification:
+If app that displays notification knows email address of user that triggered
+notification:
 
     $ GRAVATAR_EMAIL=email@example.org gratifier "Notification title" "Notification body"
 
 ### Option 2: specifying nickname
 
-If your app knows only nickname of user that triggered notification:
+If app that displays notification knows only nickname of user that triggered
+notification:
 
     $ NICKNAME=joe gratifier "Notification title" "Notification body"
 

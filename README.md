@@ -18,30 +18,81 @@ It supports following notification utilities:
 
 ## Installation
 
+### Step 1: Download
+
     $ curl -skL https://github.com/sickill/gratifier/raw/master/bin/gratifier >~/bin/gratifier
     $ chmod +x ~/bin/gratifier
 
 \* Make sure `~/bin` is in your `$PATH` or put `gratifier` script somewhere else
 on your `$PATH`.
 
+### Step 2: Symlink
+
+gratifier is a very thin wrapper around existing notification utility - it
+passes all its command-line arguments down to the actual utility. The only
+thing it adds is a proper command-line switch and image path for displaying
+avatar.
+
+Now, you must create a symlink to the gratifier script. The name of this
+symlink should include the name of your desktop notification utility.
+
+Here are some examples:
+
+    # Gnome/Unity
+    $ ln -s ~/bin/gratifier ~/bin/gratifier.notify-send
+
+    # KDE
+    $ ln -s ~/bin/gratifier ~/bin/gratifier.kdialog
+
+    # OSX
+    $ ln -s ~/bin/gratifier ~/bin/gratifier.growlnotify
+
+    # Some funky symlink names:
+    $ ln -s ~/bin/gratifier ~/bin/growlnotify-avatar
+    $ ln -s ~/bin/gratifier ~/bin/my-kdialog-with-gravatar
+
+Thanks to this symlink:
+
+* gratifier don't need to guess what utility you have installed (or choose one
+  if you have let's say both notify-send and kdialog on Linux)
+
+* it gives you clear indication what utility it wraps thus saving you from
+  confusion about command-line args you need to pass to it
+
 ## Usage
 
-### Option 1: specifying email address
+Following usage examples are assuming you have `notify-send` as your notifier.
+Adjust script name and arguments to your environment.
 
-If app that displays notification knows email address of user that triggered
-notification:
+### No avatar
 
-    $ GRAVATAR_EMAIL=email@example.org gratifier "Notification title" "Notification body"
+Just invoke the script like in old, pre-gratifier days:
 
-### Option 2: specifying nickname
+    $ gratifier.notify-send "Hey you!"
 
-If app that displays notification knows only nickname of user that triggered
-notification:
+### Avatar via email address
 
-    $ NICKNAME=joe gratifier "Notification title" "Notification body"
+If you have email address of user that triggered notification invoke gratifier
+with `GRAVATAR_EMAIL` env variable like this:
 
-In this scenario you need to edit `~/.gratifier/nicknames/joe` file and specify
-either email address you know for this nickname or path to avatar image.
+    $ GRAVATAR_EMAIL=email@example.org gratifier.notify-send "Notification title" "Notification body"
+
+### Avatar via nickname
+
+You may want to use gratifier as a notifier for some app that doesn't have
+information about email addresses of the users (for example IRC client
+like_irssi_).
+
+If you only have nickname of user that triggered notification invoke gratifier
+with `NICKNAME` env variable like this:
+
+    $ NICKNAME=joe gratifier.notify-send "Notification title" "Notification body"
+
+If it happens that app displaying notification doesn't know the email address
+of user "joe" but **you** know it just edit `~/.gratifier/nicknames/joe` file
+and specify his email there. This file will be created for you on first
+notification displayed for a nickname. Also, if you don't know joe's email but
+you have got his photo you can specify path to the image in the same file.
 
 ## Bugs
 

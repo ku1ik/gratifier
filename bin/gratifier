@@ -5,19 +5,6 @@ size=32
 mkdir -p $HOME/.gratifier/gravatars/$size
 mkdir -p $HOME/.gratifier/nicknames/avatars
 
-function notify {
-  if [ $(which notify-send 2>/dev/null) ]; then
-    notify-send "$@" -i "$avatar_path"
-  elif [ $(which growlnotify 2>/dev/null) ]; then
-    growlnotify "$@" --image "$avatar_path"
-  elif [ $(which kdialog 2>/dev/null) ]; then
-    kdialog "$@" --icon "$avatar_path"
-  else
-    echo "No notification utility found. Please install libnotify-bin, kdialog or growlnotify."
-    exit 1
-  fi
-}
-
 function calc_md5_sum {
   if [ $(which md5sum 2>/dev/null) ]; then
     echo -n "$1" | md5sum | cut -f1 -d' '
@@ -64,4 +51,16 @@ if [[ -z "$avatar_path" ]]; then
   fi
 fi
 
-notify "$@"
+if [[ "$0" == *"notify-send"* ]]; then
+  notify-send "$@" -i "$avatar_path"
+
+elif [[ "$0" == *"growlnotify"* ]]; then
+  growlnotify "$@" --image "$avatar_path"
+
+elif [[ "$0" == *"kdialog"* ]]; then
+  kdialog "$@" --icon "$avatar_path"
+
+else
+  echo "Please invoke me from appropriate symlink (gratifier.notify-send or similar)."
+  exit 1
+fi

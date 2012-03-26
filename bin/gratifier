@@ -7,12 +7,11 @@ mkdir -p $HOME/.gratifier/nicknames/avatars
 
 function notify {
   if [ $(which notify-send 2>/dev/null) ]; then
-    notify-send -i "$3" "$1" "$2"
+    notify-send "$@" -i "$avatar_path"
   elif [ $(which growlnotify 2>/dev/null) ]; then
-    app_name=$(basename $0)
-    growlnotify -n "$app_name" --image "$3" -m "$2" "$1"
+    growlnotify "$@" --image "$avatar_path"
   elif [ $(which kdialog 2>/dev/null) ]; then
-    kdialog --icon $3 --title "$1" --passivepopup "$2"
+    kdialog "$@" --icon "$avatar_path"
   else
     echo "No notification utility found. Please install libnotify-bin, kdialog or growlnotify."
     exit 1
@@ -65,4 +64,4 @@ if [[ -z "$avatar_path" ]]; then
   fi
 fi
 
-notify "$1" "$2" "$avatar_path"
+notify "$@"

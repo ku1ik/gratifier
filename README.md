@@ -53,7 +53,7 @@ Here are some examples:
 
 Thanks to this symlink:
 
-* gratifier don't need to guess what utility you have installed (or choose one
+* gratifier doesn't need to guess what utility you have installed (or choose one
   if you have let's say both notify-send and kdialog on Linux)
 
 * it gives you clear indication what utility it wraps thus saving you from

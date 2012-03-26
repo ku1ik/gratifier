@@ -81,7 +81,7 @@ with `GRAVATAR_EMAIL` env variable like this:
 
 You may want to use gratifier as a notifier for some app that doesn't have
 information about email addresses of the users (for example IRC client
-like_irssi_).
+like _irssi_).
 
 If you only have nickname of user that triggered notification invoke gratifier
 with `NICKNAME` env variable like this:

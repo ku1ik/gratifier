@@ -41,7 +41,7 @@ if [[ -z "$avatar_path" ]]; then
     email_hash=$(calc_md5_sum $email)
     avatar_path="$HOME/.gratifier/gravatars/$size/$email_hash"
 
-    if [[ ! -f $avatar_path ]]; then
+    if [[ ! -e $avatar_path ]]; then
       curl -s "http://www.gravatar.com/avatar/$email_hash?s=$size&d=/default" -o $avatar_path
 
       if [[ ! -f $avatar_path ]]; then
